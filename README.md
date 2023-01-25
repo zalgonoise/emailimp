@@ -59,3 +59,20 @@ Here is a summary of some corrections that converted those 5500 allocations to 2
 
 The other benchmark function (`BenchmarkParse`) shows how the overhead is present on both the I/O and the CSV parsing, especially the latter. To push further in terms of performance from here, would be to implement a lightweight CSV parser and lexer. I am saying this because I already have [the generic library to do so](https://github.com/zalgonoise/lex) :) Otherwise probing for different libraries with better performance that still ensure that the tests pass is a great option, too.
 
+Benchmark results:
+
+```
+go test -bench . -benchmem -memprofile /tmp/mem.pprof | prettybench 
+
+goos: linux
+goarch: amd64
+pkg: github.com/zalgonoise/emailimp
+cpu: AMD Ryzen 3 PRO 3300U w/ Radeon Vega Mobile Gfx
+
+PASS
+benchmark               iter        time/iter   bytes alloc           allocs
+---------               ----        ---------   -----------           ------
+BenchmarkParse-4         409    2602.11 μs/op   697584 B/op   6063 allocs/op
+BenchmarkMapAndSort-4   1618     681.74 μs/op    73721 B/op     26 allocs/op
+ok      github.com/zalgonoise/emailimp  2.553s
+```
